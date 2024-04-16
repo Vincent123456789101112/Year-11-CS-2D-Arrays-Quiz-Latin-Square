@@ -1,74 +1,75 @@
+import java.util.stream.IntStream;
+
 public class LatinSquare {
 
-    /**
-     *
-     * @param rowSize
-     * @return given the rowSize N (corresponding to an array of size N x N),
-     *         calculate and return the sum of consecutive integers 1 + 2 + ... + N
-     */
+    // Calculates the target checksum by summing integers from 1 to N
     public static int targetCheckSum1(int rowSize) {
-        int sum=0;
-        return sum;
+        return rowSize * (rowSize + 1) / 2;
     }
 
-    /**
-     *
-     * @param rowSize
-     * @return given the rowSize N (corresponding to an array of size N x N),
-     *         calculate and return the product of consecutive integers 1 * 2 * ... * N
-     */
+    // Calculates the target checksum by multiplying integers from 1 to N
     public static int targetCheckSum2(int rowSize) {
-        int prod=1;
-        return prod;
+        int product = 1;
+        for (int i = 1; i <=rowSize ; i++) {
+            product *= i;
+        }
+        return product;
     }
 
-
-    /**
-     *
-     * @param array2d
-     * @param checkSum1
-     * @param checkSum2
-     * @return whether or not every row's sum in array2d is equal to checkSum1,
-     *         AND that every row's product in array2d is equal to checkSum2
-     */
+    // Checks if each row in the 2D array matches the given checksums
     public static boolean isLatinRows(int[][] array2d, int checkSum1, int checkSum2) {
-        return false;
+        for (int[] row : array2d) {
+            int sum = 0;
+            int product = 1;
+            for (int value : row) {
+                sum += value;
+                product *= value;
+            }
+            if (sum != checkSum1 || product != checkSum2) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    /**
-     *
-     * @param array2d
-     * @param checkSum1
-     * @param checkSum2
-     * @return whether or not every column's sum in array2d is equal to checkSum1,
-     *         AND that every column's product in array2d is equal to checkSum2
-     */
+    // Checks if each column in the 2D array matches the given checksums
     public static boolean isLatinColumns(int[][] array2d, int checkSum1, int checkSum2) {
-        return false;
+        int n = array2d.length;
+        for (int i = 0; i < n; i++) {
+            int sum = 0;
+            int product = 1;
+            for (int j = 0; j < n; j++) {
+                sum += array2d[j][i];
+                product *= array2d[j][i];
+            }
+            if (sum != checkSum1 || product != checkSum2) {
+                return false;
+            }
+        }
+        return true;
     }
 
-
-    /**
-     *
-     * @param array2d
-     * @return whether array2d is a Latin square or not.
-     *         Hint: make use of isLatinRows and isLatinColumns
-     */
+    // Checks if the 2D array is a Latin square
     public static boolean isLatinSquare(int[][] array2d) {
-        return false;
+        int n = array2d.length;
+        int checkSum1 = targetCheckSum1(n);
+        int checkSum2 = targetCheckSum2(n);
+        return isLatinRows(array2d, checkSum1, checkSum2) && isLatinColumns(array2d, checkSum1, checkSum2);
     }
 
-    /** OPTIONAL (only do if you have time)
-     *
-     * @param array2d
-     * @return whether or not array2d is a latin square
-     *         as well as whether the sum and product of each of the two main diagonals is equal
-     *         to the checkSums or not.
-     *
-     * NOTE: not all Latin squares are diagonal; for example, diagonal Latin squares do not exist for 2x2 or 3x3
-     */
-    public static boolean isDiagonalLatinSquare(int[][] array2d) {
-        return false;
-    }
+    public static void main(String[] args) {
+        int[][] array2d = {
+                {1, 3, 4, 2},
+                {2, 4, 3, 1},
+                {3, 1, 2, 4},
+                {4, 2, 1, 3}
+        };
 
+        System.out.println("Target CheckSum1: " + targetCheckSum1(array2d.length));  // Output: 10
+        System.out.println("Target CheckSum2: " + targetCheckSum2(array2d.length));  // Output: 24
+
+        System.out.println("Is Latin Rows: " + isLatinRows(array2d, targetCheckSum1(array2d.length), targetCheckSum2(array2d.length)));  // Output: true
+        System.out.println("Is Latin Columns: " + isLatinColumns(array2d, targetCheckSum1(array2d.length), targetCheckSum2(array2d.length)));  // Output: true
+        System.out.println("Is Latin Square: " + isLatinSquare(array2d));  // Output: true
+    }
 }
